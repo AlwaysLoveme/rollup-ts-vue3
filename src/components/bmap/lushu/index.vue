@@ -32,7 +32,7 @@ export default Vue.extend({
     },
     iconLabel: {
       type: String,
-      default: "我是提示信息",
+      default: "",
     },
     iconSpeed: {
       type: Number,
