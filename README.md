@@ -118,24 +118,6 @@ Vue.component(BMap.name, BMap);
         BMapGLLib: window.BMapGLLib
       </td>
     </tr>
-    <tr>
-      <td>https</td>
-      <td>是否允许加载https文件</td>
-      <td>boolean</td>
-      <td align="center">true/false</td>
-    </tr>
-    <tr>
-      <td>width</td>
-      <td>地图宽度</td>
-      <td align="center">string</td>
-      <td align="center">-</td>
-    </tr>
-    <tr>
-      <td>height</td>
-      <td>地图高度</td>
-      <td align="center">string</td>
-      <td align="center">-</td>
-    </tr>
   </tbody>
 </table>
 

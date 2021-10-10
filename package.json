@@ -1,6 +1,6 @@
 {
   "name": "vue-js-track-map",
-  "version": "1.0.7-1",
+  "version": "1.0.7-3",
   "description": "百度地图API基于vue的鹰眼轨迹图",
   "main": "lib/index.js",
   "module": "lib/index.esm.js",
@@ -19,7 +19,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AlwaysLoveme/rollup-ts-vue3-template.git#vue2"
+    "url": "git+https://github.com/AlwaysLoveme/rollup-ts-vue3-template/tree/vue2"
   },
   "keywords": [
     "template",
