@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <BMap
+    <TrajectoryAnimation
       ref="bmap"
       @ready="mapReady"
       :path="path"
@@ -8,21 +8,22 @@
         lng: '116.297611',
         lat: '40.047363'
       }"
+      ak="pb3Uk089jFIaoCTjIdSftOmk61j6l3cV"
     />
     <button @click="start">开始</button>
     <button @click="pause">暂停</button>
-    <button @click="goon">继续</button>
+    <button @click="stop">停止</button>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { BMap } from '../../lib';
+import { TrajectoryAnimation } from '../../lib';
 
 export default Vue.extend({
   name: 'App',
   components: {
-    BMap
+    TrajectoryAnimation,
   },
   data() {
     return {
@@ -59,7 +60,7 @@ export default Vue.extend({
   },
   methods: {
     mapReady(BMap: any, BMapGL: any, BMapGLLib: any, trackAni: any) {
-      console.log(trackAni);
+      // console.log(trackAni);
       // 定位当前位置
       var geolocation = new BMapGL.Geolocation();
       geolocation.getCurrentPosition(function (this: any, r: any) {
@@ -78,8 +79,8 @@ export default Vue.extend({
     pause() {
       (this.$refs.bmap as any).pauseTrackAnimation();
     },
-    goon() {
-      (this.$refs.bmap as any).continueTrackAnimation();
+    stop() {
+      (this.$refs.bmap as any).stopTrackAnimation();
     }
   },
 });

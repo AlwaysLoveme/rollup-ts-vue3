@@ -1,8 +1,10 @@
 import path from "path";
 import cssnao from "cssnano";
+import url from "@rollup/plugin-url";
 import json from "@rollup/plugin-json";
 import autoprefixer from "autoprefixer";
 import alias from "@rollup/plugin-alias";
+// import image from "@rollup/plugin-image";
 import vuePlugin from "rollup-plugin-vue";
 import postcss from "rollup-plugin-postcss";
 import { babel } from "@rollup/plugin-babel";
@@ -67,6 +69,11 @@ export default {
   ],
   plugins: [
     json(),
+    url({
+      sourceDir: path.join(__dirname, "src/assets"),
+      publicPath: path.resolve(__dirname, "lib/assets"),
+    }),
+    // image(),
     // 配合 commnjs 解析第三方模块
     nodeResolve({
       mainFields: ["module", "jsnext:main", "main", "browser"],
@@ -77,7 +84,7 @@ export default {
     }),
     alias({
       entries: {
-        "@": "../src",
+        "@": path.resolve(__dirname, "./src"),
       },
     }),
     vuePlugin(),

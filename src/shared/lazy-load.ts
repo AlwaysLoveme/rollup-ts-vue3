@@ -33,17 +33,27 @@ const LazyLoad = (function (doc) {
   // -- Private Variables ------------------------------------------------------
 
   // User agent and feature test information.
-  let env,
+  let env: {
+      webkit?: any;
+      ie?: any;
+      opera?: any;
+      gecko?: any;
+      unknown?: any;
+      async: any;
+    },
     // Reference to the <head> element (populated lazily).
-    head,
+    head: HTMLHeadElement,
     // Requests currently in progress, if any.
-    pending = {},
+    // eslint-disable-next-line prefer-const
+    pending: Record<string, any> = {},
     // Number of times we've polled to check whether a pending stylesheet has
     // finished loading. If this gets too high, we're probably stalled.
     pollCount = 0,
     // Queued requests.
-    queue = { css: [], js: [] },
+    // eslint-disable-next-line prefer-const
+    queue: { css: any[]; js: any[] } = { css: [], js: [] },
     // Reference to the browser's list of stylesheets.
+    // eslint-disable-next-line prefer-const
     styleSheets = doc.styleSheets;
 
   // -- Private Methods --------------------------------------------------------
@@ -56,11 +66,9 @@ const LazyLoad = (function (doc) {
   @return {HTMLElement}
   @private
   */
-  function createNode(name, attrs) {
-    let node = doc.createElement(name),
-      attr;
-
-    for (attr in attrs) {
+  function createNode(name: string, attrs?: Record<string, string>) {
+    const node = doc.createElement(name);
+    for (const attr in attrs) {
       // eslint-disable-next-line no-prototype-builtins
       if (attrs.hasOwnProperty(attr)) {
         node.setAttribute(attr, attrs[attr]);
@@ -78,7 +86,8 @@ const LazyLoad = (function (doc) {
   @param {String} type resource type ('css' or 'js')
   @private
   */
-  function finish(type) {
+  function finish(type: "css" | "js") {
+    // eslint-disable-next-line prefer-const
     let p = pending[type],
       callback,
       urls;
@@ -143,15 +152,24 @@ const LazyLoad = (function (doc) {
     be executed in this object's context
   @private
   */
-  function load(type, urls, callback, obj, context) {
+  function load(
+    type: "css" | "js",
+    urls?: string[],
+    callback?: () => void,
+    obj?: Record<string, string>,
+    context?: any
+  ) {
+    // eslint-disable-next-line prefer-const
     let _finish = function () {
         finish(type);
       },
+      // eslint-disable-next-line prefer-const
       isCSS = type === "css",
+      // eslint-disable-next-line prefer-const
       nodes = [],
       i,
       len,
-      node,
+      node: any,
       p,
       pendingUrls,
       url;
@@ -202,6 +220,7 @@ const LazyLoad = (function (doc) {
     }
 
     head || (head = doc.head || doc.getElementsByTagName("head")[0]);
+    // eslint-disable-next-line prefer-const
     pendingUrls = p.urls.concat();
 
     for (i = 0, len = pendingUrls.length; i < len; ++i) {
@@ -272,7 +291,7 @@ const LazyLoad = (function (doc) {
   @param {HTMLElement} node Style node to poll.
   @private
   */
-  function pollGecko(node) {
+  function pollGecko(node: any) {
     let hasRules;
 
     try {
@@ -310,6 +329,7 @@ const LazyLoad = (function (doc) {
   @private
   */
   function pollWebKit() {
+    // eslint-disable-next-line prefer-const
     let css = pending.css,
       i;
 
@@ -355,7 +375,12 @@ const LazyLoad = (function (doc) {
       will be executed in this object's context
     @static
     */
-    css: function (urls, callback, obj, context) {
+    css: function (
+      urls: string[],
+      callback?: () => void,
+      obj?: Record<string, string>,
+      context?: any
+    ) {
       load("css", urls, callback, obj, context);
     },
 
@@ -377,7 +402,12 @@ const LazyLoad = (function (doc) {
       will be executed in this object's context
     @static
     */
-    js: function (urls, callback, obj, context) {
+    js: function (
+      urls: string[],
+      callback: () => void,
+      obj?: Record<string, any>,
+      context?: any
+    ) {
       load("js", urls, callback, obj, context);
     },
   };

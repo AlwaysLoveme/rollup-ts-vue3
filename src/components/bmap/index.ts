@@ -1,9 +1,13 @@
-import HelloWord from "./index.vue";
+import TrajectoryAnimation from "./lushu/index.vue";
+import TrackAnimation from "./trackAnimation/index.vue";
 
-HelloWord.install = (app) => app.component(HelloWord.name, HelloWord);
+const components = [TrajectoryAnimation, TrackAnimation];
 
-if (typeof window !== "undefined" && window.Vue) {
-  HelloWord.install(window.Vue);
-}
+components.forEach((component) => {
+  component.install = (app) => app.component(component.name, component);
+  if (typeof window !== "undefined" && window.Vue) {
+    component.install(window.Vue);
+  }
+});
 
-export default HelloWord;
+export { TrajectoryAnimation, TrackAnimation };

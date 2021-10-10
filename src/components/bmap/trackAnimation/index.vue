@@ -1,50 +1,24 @@
 <template>
   <div class="map">
-    <div id="container" ref="container" :style="mapStyle"></div>
+    <div
+      id="container"
+      ref="container"
+      :style="{ width: width, height: height }"
+    ></div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from "vue";
 import "./index.scss";
-import LazyLoad from "../../shared/lazy-load";
+import LazyLoad from "../../../shared/lazy-load";
+import minxinProps, { LngLat } from "../minxin-props";
 
+type BMap = null | any;
 export default Vue.extend({
-  name: "bMap",
+  name: "BMapTrackAnimation",
   props: {
-    ak: {
-      type: String,
-      default: "pb3Uk089jFIaoCTjIdSftOmk61j6l3cV",
-    },
-    // 是否允许https
-    https: {
-      type: Boolean,
-      default: true,
-    },
-    width: {
-      type: String,
-      default: "800px",
-    },
-    height: {
-      type: String,
-      default: "400px",
-    },
-    center: {
-      type: Object,
-      default() {
-        return {
-          lng: "",
-          lat: "",
-        };
-      },
-    },
-    // 轨迹动画点集合
-    path: {
-      type: Array,
-      default() {
-        return [];
-      },
-    },
+    ...minxinProps,
     trackOptions: {
       type: Object,
       default() {
@@ -59,18 +33,10 @@ export default Vue.extend({
   },
   data() {
     return {
-      trackAni: null,
+      trackAni: null as BMap,
       isShow: true,
-      bmap: null,
+      bmap: null as BMap,
     };
-  },
-  computed: {
-    mapStyle() {
-      return {
-        width: this.width,
-        height: this.height,
-      };
-    },
   },
   mounted() {
     this.loadBmapGl();
@@ -86,7 +52,7 @@ export default Vue.extend({
       }&callback=initialize`;
       Vue.nextTick(() => {
         LazyLoad.js([BMapUrl, BMapGLLibUrl], () => {
-          window.initialize = async () => {
+          (window as any).initialize = async () => {
             this.bmap = new window.BMapGL.Map(this.$refs.container);
             this.bmap.centerAndZoom(
               new window.BMapGL.Point(this.center.lng, this.center.lat),
@@ -108,7 +74,7 @@ export default Vue.extend({
         });
       });
     },
-    createTrack(path) {
+    createTrack(path: LngLat[]) {
       return new Promise((resolve, reject) => {
         try {
           const point = [];
@@ -128,13 +94,14 @@ export default Vue.extend({
       });
     },
     startTrackAnimation() {
-      this.trackAni?.start?.();
+      this.trackAni.cancel();
+      this.trackAni.start();
     },
     pauseTrackAnimation() {
-      this.trackAni?.pause?.();
+      this.trackAni.pause();
     },
     continueTrackAnimation() {
-      this.trackAni?.continue?.();
+      this.trackAni.continue();
     },
   },
 });

@@ -1,10 +1,10 @@
 import type { VueConstructor } from "vue";
-import BMap from "./components/bmap";
+import { TrackAnimation, TrajectoryAnimation } from "./components/bmap";
 
-const components = [BMap];
+const components = [TrackAnimation, TrajectoryAnimation];
 const install = (app: VueConstructor) => {
   components.forEach((component) => app.use(component));
 };
 
-export { BMap };
+export { TrackAnimation, TrajectoryAnimation };
 export default { install };

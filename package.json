@@ -1,6 +1,6 @@
 {
   "name": "vue-js-track-map",
-  "version": "1.0.7-3",
+  "version": "1.0.9",
   "description": "百度地图API基于vue的鹰眼轨迹图",
   "main": "lib/index.js",
   "module": "lib/index.esm.js",
@@ -51,8 +51,10 @@
     "@rollup/plugin-alias": "^3.1.5",
     "@rollup/plugin-babel": "^5.3.0",
     "@rollup/plugin-commonjs": "^20.0.0",
+    "@rollup/plugin-image": "^2.1.1",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.0.5",
+    "@rollup/plugin-url": "^6.1.0",
     "@types/qs": "^6.9.7",
     "@typescript-eslint/eslint-plugin": "^4.31.2",
     "@typescript-eslint/parser": "^4.31.2",

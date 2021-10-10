@@ -1,7 +1,9 @@
-### 百度地图轨迹动画 GL -- Vue2.0 组件
+### 百度地图轨迹动画
+仅支持Vue2.0版本，不支持Vue3.0
+
+支持Typescript
 
 #### 安装
-
 ```bash
 npm install vue-js-track-map -S
 ```
@@ -10,20 +12,20 @@ npm install vue-js-track-map -S
 
 ```js
 import Vue from "vue";
-import { BMap } from "vue-js-track-map";
+import { TrajectoryAnimation } from "vue-js-track-map";
 
 // 全局组件
-Vue.component(BMap.name, BMap);
+Vue.component(TrajectoryAnimation.name, TrajectoryAnimation);
 
 // 局部组件
 <template>
-  <BMap @ready="mapReady" ak="XXXXXXX" />
+  <TrajectoryAnimation @ready="mapReady" ak="XXXXXXX" />
 </template>
 <script>
   export default {
     name: 'demo',
     components: {
-      BMap
+      TrajectoryAnimation
     },
     methods: {
       mapReady(mapInstance, BMapGL, BMapGLLib) {
@@ -90,6 +92,55 @@ Vue.component(BMap.name, BMap);
       </td>
       <td align="center">[]</td>
     </tr>
+    <tr>
+      <td>strokeColor</td>
+      <td>轨迹路线填充颜色</td>
+      <td align="center">String</td>
+      <td align="center">颜色值</td>
+      <td align="center">#409eff</td>
+    </tr>
+    <tr>
+      <td>icon</td>
+      <td>图标路径</td>
+      <td align="center">String</td>
+      <td align="center">*.png/*.jpg/*.svg</td>
+      <td align="center">-</td>
+    </tr>
+    <tr>
+      <td>iconWidth</td>
+      <td>图标宽度</td>
+      <td align="center">Number</td>
+      <td align="center">-</td>
+      <td align="center">26</td>
+    </tr>
+    <tr>
+      <td>iconHeight</td>
+      <td>图标高度</td>
+      <td align="center">Number</td>
+      <td align="center">-</td>
+      <td align="center">13</td>
+    </tr>
+    <tr>
+      <td>iconLabel</td>
+      <td>图标上方跟随的文本框信息</td>
+      <td align="center">String</td>
+      <td align="center">-</td>
+      <td align="center">-</td>
+    </tr>
+    <tr>
+      <td>iconSpeed</td>
+      <td>图标跟随轨迹速度</td>
+      <td align="center">Number</td>
+      <td align="center">-</td>
+      <td align="center">300</td>
+    </tr>
+    <tr>
+      <td>centerZoom</td>
+      <td>地图缩放级别</td>
+      <td align="center">Number</td>
+      <td align="center">-</td>
+      <td align="center">17</td>
+    </tr>
   </tbody>
 </table>
 
@@ -125,20 +176,20 @@ Vue.component(BMap.name, BMap);
 ```js
 <template>
   <div>
-    <BMap ref="map" @ready="mapReady" ak="XXXXXXX" />
+    <TrajectoryAnimation ref="map" @ready="mapReady" ak="XXXXXXX" />
     <div>
       <button @click="start">开始</button>
       <button @click="pause">暂停</button>
-      <button @click="goon">继续</button>
+      <button @click="stop">停止</button>
     </div>
   </div>
 </template>
 <script>
-  import { BMap } from "vue-js-track-map";
+  import { TrajectoryAnimation } from "vue-js-track-map";
   export default {
     name: 'demo',
     components: {
-      BMap
+      TrajectoryAnimation
     },
     methods: {
       mapReady(mapInstance, BMapGL, BMapGLLib) {
@@ -153,10 +204,20 @@ Vue.component(BMap.name, BMap);
         this.$refs.bmap.pauseTrackAnimation();
       },
       // 继续
-      goon() {
-        this.$refs.bmap.continueTrackAnimation();
+      stop() {
+        this.$refs.bmap.stopTrackAnimation();
       }
     }
   }
 </script>
 ```
+
+#### 已知问题
+这个轨迹动画是结合`BMapGLLib`工具库中`TrackAnimation` 和 `Lushu`类实现，`TrackAnimation`本身做轨迹动画会有所卡顿，这个无法避免，所以可能会导致轨迹运行动画和图标动画不一致的情况，目前可通过设置`iconSpeed`和`trackOptions`中的`duration`和`delay`来调整。
+
+#### 链接
+BMapGLLib: [https://github.com/huiyan-fe/BMapGLLib](https://github.com/huiyan-fe/BMapGLLib)
+
+百度地图`TrackAnimation`示例: [https://lbsyun.baidu.com/index.php?title=jspopularGL/guide/trackAnimation](https://lbsyun.baidu.com/index.php?title=jspopularGL/guide/trackAnimation)
+
+百度地图`Lushu`示例: [https://bj.bcebos.com/v1/mapopen/github/BMapGLLib/Lushu/examples/index.html](https://bj.bcebos.com/v1/mapopen/github/BMapGLLib/Lushu/examples/index.html)
