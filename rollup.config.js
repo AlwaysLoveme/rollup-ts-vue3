@@ -82,8 +82,9 @@ export default {
     }),
     vuePlugin(),
     postcss({
+      extract: false,
       plugins: [autoprefixer, cssnao(), postcssImport()],
-      extract: "css/index.min.css",
+      // extract: "css/index.min.css",
       extensions: [".scss", ".css", ".less"],
     }),
     // 使得 rollup 支持 commonjs 规范，识别 commonjs 规范的依赖

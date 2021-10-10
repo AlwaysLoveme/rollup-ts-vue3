@@ -1,10 +1,12 @@
 declare module "*.vue" {
-  import type { DefineComponent, App } from "vue";
-  const component: DefineComponent & {
-    install(app: App): App;
+  import { VueConstructor } from "vue";
+  const component: VueConstructor & {
+    install(app: VueConstructor): void;
   };
   export default component;
 }
 interface Window {
   Vue: any;
+  BMapGL: any;
+  BMapGLLib: any;
 }

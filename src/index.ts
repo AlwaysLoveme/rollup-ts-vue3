@@ -1,11 +1,10 @@
-import type { App } from "vue";
-import HelloWorld from "./components/helloworld";
+import type { VueConstructor } from "vue";
+import BMap from "./components/bmap";
 
-const components = [HelloWorld];
-const install = (app: App): App => {
+const components = [BMap];
+const install = (app: VueConstructor) => {
   components.forEach((component) => app.use(component));
-  return app;
 };
 
-export { HelloWorld };
+export { BMap };
 export default { install };

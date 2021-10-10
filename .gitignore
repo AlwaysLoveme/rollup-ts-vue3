@@ -1,6 +1,7 @@
 node_modules
 demo
 .parcel-cache
+.cache
 dist
 lib
 .idea
