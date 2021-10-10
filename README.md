@@ -74,6 +74,22 @@ Vue.component(BMap.name, BMap);
       <td align="center">-</td>
       <td align="center">400px</td>
     </tr>
+    <tr>
+      <td>path</td>
+      <td>轨迹数组集合</td>
+      <td align="center">Array</td>
+      <td align="center">[ { lng: '', lat: '' } ]</td>
+      <td align="center">[]</td>
+    </tr>
+    <tr>
+      <td>trackOptions</td>
+      <td>轨迹运行配置项</td>
+      <td align="center">Object</td>
+      <td align="center">
+      详见：https://lbsyun.baidu.com/index.php?title=jspopularGL/guide/trackAnimation
+      </td>
+      <td align="center">[]</td>
+    </tr>
   </tbody>
 </table>
 
@@ -122,3 +138,43 @@ Vue.component(BMap.name, BMap);
     </tr>
   </tbody>
 </table>
+
+#### 轨迹动画开始、暂停、继续
+```js
+<template>
+  <div>
+    <BMap ref="map" @ready="mapReady" ak="XXXXXXX" />
+    <div>
+      <button @click="start">开始</button>
+      <button @click="pause">暂停</button>
+      <button @click="goon">继续</button>
+    </div>
+  </div>
+</template>
+<script>
+  import { BMap } from "vue-js-track-map";
+  export default {
+    name: 'demo',
+    components: {
+      BMap
+    },
+    methods: {
+      mapReady(mapInstance, BMapGL, BMapGLLib) {
+        console.log(mapInstance);
+      },
+      // 开始
+      start() {
+        this.$refs.bmap.startTrackAnimation();
+      },
+      // 暂停
+      pause() {
+        this.$refs.bmap.pauseTrackAnimation();
+      },
+      // 继续
+      goon() {
+        this.$refs.bmap.continueTrackAnimation();
+      }
+    }
+  }
+</script>
+```
