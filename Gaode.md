@@ -86,13 +86,6 @@ Vue.component(AmapTrajectory.name, AmapTrajectory);
       <td align="center">[]</td>
     </tr>
     <tr>
-      <td>strokeColor</td>
-      <td>轨迹路线填充颜色</td>
-      <td align="center">String</td>
-      <td align="center">颜色值</td>
-      <td align="center">#409eff</td>
-    </tr>
-    <tr>
       <td>markerIcon</td>
       <td>图标路径</td>
       <td align="center">String</td>
