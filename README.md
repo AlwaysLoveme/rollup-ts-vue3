@@ -1,7 +1,7 @@
 ### 百度地图轨迹动画
 仅支持Vue2.0版本，支持Typescript,不支持Vue3.0，
 
-<a href="Gaode.md">点此进入高德地图版本轨迹动画文档</a>
+<a href="https://github.com/AlwaysLoveme/rollup-ts-vue3-template/blob/vue2/Gaode.md">点此进入高德地图版本轨迹动画文档</a>
 
 
 #### 安装
