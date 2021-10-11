@@ -5,7 +5,7 @@
 <script lang="ts">
 import "./index.scss";
 import Vue from "vue";
-import minxinProps, { LngLat } from "../minxin-props";
+import minxinProps from "../minxin-props";
 import LazyLoad from "@/shared/lazy-load";
 import Icon from "@/assets/car.png";
 
@@ -78,6 +78,7 @@ export default Vue.extend({
         this.ak
       }&callback=initialize`;
       LazyLoad.js([BMapUrl, BMapTackAnimationUrl], () => {
+        delete (window as any).initialize;
         (window as any).initialize = async () => {
           this.bmap = new window.BMapGL.Map(this.$refs.map);
           this.bmap.centerAndZoom(
@@ -113,6 +114,7 @@ export default Vue.extend({
         }, 200);
       });
     },
+    // eslint-disable-next-line no-undef
     drawPath(path: LngLat[]) {
       const polyLine = new window.BMapGL.Polyline(path, {
         strokeColor: this.strokeColor,

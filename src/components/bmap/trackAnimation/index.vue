@@ -12,7 +12,7 @@
 import Vue from "vue";
 import "./index.scss";
 import LazyLoad from "../../../shared/lazy-load";
-import minxinProps, { LngLat } from "../minxin-props";
+import minxinProps from "../minxin-props";
 
 type BMap = null | any;
 export default Vue.extend({

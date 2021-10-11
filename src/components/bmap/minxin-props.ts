@@ -1,10 +1,5 @@
 import { PropType } from "vue";
 
-export interface LngLat {
-  lng: string;
-  lat: string;
-}
-
 export default {
   ak: {
     type: String,

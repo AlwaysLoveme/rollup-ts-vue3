@@ -172,15 +172,17 @@ Vue.component(TrajectoryAnimation.name, TrajectoryAnimation);
   </tbody>
 </table>
 
-#### 轨迹动画开始、暂停、继续
+#### 轨迹动画开始、暂停、继续; 显示/隐藏信息提示框
 ```js
 <template>
   <div>
-    <TrajectoryAnimation ref="map" @ready="mapReady" ak="XXXXXXX" />
+    <TrajectoryAnimation ref="map" iconLabel="提示框文本" @ready="mapReady" ak="XXXXXXX" />
     <div>
       <button @click="start">开始</button>
       <button @click="pause">暂停</button>
       <button @click="stop">停止</button>
+      <button @click="showInfo">显示信息框</button>
+      <button @click="hideInfo">隐藏信息框</button>
     </div>
   </div>
 </template>
@@ -206,6 +208,12 @@ Vue.component(TrajectoryAnimation.name, TrajectoryAnimation);
       // 继续
       stop() {
         this.$refs.bmap.stopTrackAnimation();
+      },
+      showInfo(){
+        this.$refs.bmap.showInfoWindow();
+      },
+      hideInfo(){
+        this.$refs.bmap.hideInfoWindow();
       }
     }
   }

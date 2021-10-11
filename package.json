@@ -1,6 +1,6 @@
 {
   "name": "vue-js-track-map",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "百度地图API基于vue的鹰眼轨迹图",
   "main": "lib/index.js",
   "module": "lib/index.esm.js",
@@ -35,6 +35,7 @@
   },
   "homepage": "https://github.com/AlwaysLoveme/rollup-ts-vue3-template#readme",
   "dependencies": {
+    "@amap/amap-jsapi-loader": "^1.0.1",
     "axios": "^0.21.4",
     "vue": "^2.6.14"
   },

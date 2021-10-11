@@ -21,6 +21,7 @@ const eslintrc = {
   rules: {
     "sort-vars": 0, //变量声明时排序
     eqeqeq: 0, //必须使用全等
+    "no-undef": 0,
     "valid-typeof": 2, //必须使用合法的typeof的值
     "space-after-keywords": [0, "always"], //关键字后面是否要空一格
     "@typescript-eslint/no-explicit-any": "off",
