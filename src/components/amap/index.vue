@@ -65,11 +65,6 @@ export default Vue.extend({
         return [];
       },
     },
-    // 是否显示路线
-    showPolyLine: {
-      type: Boolean,
-      default: false,
-    },
     polyLineOptions: {
       type: Object as PropType<PolyLineOptions>,
       default() {
@@ -133,7 +128,6 @@ export default Vue.extend({
               this.amap.setCenter(e.target.getPosition(), true);
             });
             this.amap.setFitView();
-
             this.$emit("change", this.amap, AMap);
           });
         })
@@ -144,7 +138,6 @@ export default Vue.extend({
     handlerPath() {
       const { path } = this;
       return path.map((item) => [item.lng, item.lat]);
-      // return this.testPath;
     },
     async polyLine(AMap: any) {
       this.polyline = new AMap.Polyline({
