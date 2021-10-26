@@ -59,10 +59,17 @@ export default Vue.extend({
       bmap: null as BMap,
       lushu: null as BMap,
       trackAni: null as BMap,
+      timer: null as any,
     };
   },
   mounted() {
     this.loadMap();
+  },
+  beforeDestroy() {
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
   },
   methods: {
     loadMap() {
@@ -89,12 +96,16 @@ export default Vue.extend({
           // if (this.path.length) await this.createTrack(this.path);
           if (this.path.length) this.drawPath(this.path);
         };
-        setTimeout(() => {
+        if (this.timer) {
+          clearTimeout(this.timer);
+          this.timer = null;
+        }
+        this.timer = setTimeout(() => {
           LazyLoad.js([BMapGLLibUrl], async () => {
             if (this.path.length) {
               this.lushu = new window.BMapGLLib.LuShu(this.bmap, this.path, {
                 defaultContent: this.iconLabel, // "信息窗口文案"
-                autoView: false, // 是否开启自动视野调整，如果开启那么路书在运动过程中会根据视野自动调整
+                autoView: true, // 是否开启自动视野调整，如果开启那么路书在运动过程中会根据视野自动调整
                 speed: this.iconSpeed,
                 icon: new window.BMapGL.Icon(
                   this.icon,
@@ -112,7 +123,7 @@ export default Vue.extend({
             }
             this.$emit("ready", this.bmap, window.BMapGL, window.BMapGLLib);
           });
-        }, 500);
+        }, 700);
       });
     },
     // eslint-disable-next-line no-undef
