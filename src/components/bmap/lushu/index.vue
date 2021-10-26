@@ -86,7 +86,8 @@ export default Vue.extend({
             this.centerZoom
           );
           this.bmap.enableScrollWheelZoom(true);
-          if (this.path.length) await this.createTrack(this.path);
+          // if (this.path.length) await this.createTrack(this.path);
+          if (this.path.length) this.drawPath(this.path);
         };
         setTimeout(() => {
           LazyLoad.js([BMapGLLibUrl], async () => {
@@ -111,7 +112,7 @@ export default Vue.extend({
             }
             this.$emit("ready", this.bmap, window.BMapGL, window.BMapGLLib);
           });
-        }, 200);
+        }, 500);
       });
     },
     // eslint-disable-next-line no-undef
@@ -147,15 +148,15 @@ export default Vue.extend({
     },
     startTrackAnimation() {
       this.lushu.start();
-      this.trackAni.start();
+      // this.trackAni.start();
     },
     pauseTrackAnimation() {
       this.lushu.pause();
-      this.trackAni.pause();
+      // this.trackAni.pause();
     },
     stopTrackAnimation() {
       this.lushu.stop();
-      this.trackAni.pause();
+      // this.trackAni.pause();
     },
     //隐藏信息窗口
     showInfoWindow() {
