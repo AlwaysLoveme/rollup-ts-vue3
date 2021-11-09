@@ -36,7 +36,7 @@ export default Vue.extend({
     },
     iconSpeed: {
       type: Number,
-      default: 300,
+      default: 500,
     },
     centerZoom: {
       type: Number,
@@ -47,7 +47,7 @@ export default Vue.extend({
       default() {
         return {
           overallView: true, //是否在动画结束后总览视图缩放（调整地图到能看到整个轨迹的视野），默认开启
-          tilt: 50, // 设置动画中的地图倾斜角度，默认55度
+          tilt: 55, // 设置动画中的地图倾斜角度，默认55度
           duration: 10000, // 动画持续时常，单位ms
           delay: 300, // 动画开始延迟
         };
@@ -59,32 +59,26 @@ export default Vue.extend({
       bmap: null as BMap,
       lushu: null as BMap,
       trackAni: null as BMap,
-      timer: null as any,
     };
   },
   mounted() {
     this.loadMap();
   },
-  beforeDestroy() {
-    if (this.timer) {
-      clearTimeout(this.timer);
-      this.timer = null;
-    }
-  },
   methods: {
     loadMap() {
       const BMapGLLibUrl = `${
         this.https ? "https:" : ""
-      }//bj.bcebos.com/v1/mapopen/github/BMapGLLib/Lushu/src/Lushu.js`;
-      const BMapTackAnimationUrl = `${
-        this.https ? "https:" : ""
-      }//mapopen.bj.bcebos.com/github/BMapGLLib/TrackAnimation/src/TrackAnimation.js`;
+      }//bj.bcebos.com/v1/mapopen/github/BMapGLLib/Lushu/src/Lushu.min.js`;
+      // 轨迹回放依赖
+      // const BMapTackAnimationUrl = `${
+      //   this.https ? "https:" : ""
+      // }//mapopen.bj.bcebos.com/github/BMapGLLib/TrackAnimation/src/TrackAnimation.js`;
       const BMapUrl = `${
         this.https ? "https:" : ""
       }//api.map.baidu.com/api?type=webgl&v=1.0&ak=${
         this.ak
       }&callback=initialize`;
-      LazyLoad.js([BMapUrl, BMapTackAnimationUrl], () => {
+      LazyLoad.js([BMapUrl], () => {
         delete (window as any).initialize;
         (window as any).initialize = async () => {
           this.bmap = new window.BMapGL.Map(this.$refs.map);
@@ -93,16 +87,12 @@ export default Vue.extend({
             this.centerZoom
           );
           this.bmap.enableScrollWheelZoom(true);
-          // if (this.path.length) await this.createTrack(this.path);
-          if (this.path.length) this.drawPath(this.path);
-        };
-        if (this.timer) {
-          clearTimeout(this.timer);
-          this.timer = null;
-        }
-        this.timer = setTimeout(() => {
-          LazyLoad.js([BMapGLLibUrl], async () => {
+          // 加载路书JS
+          LazyLoad.js([BMapGLLibUrl], () => {
             if (this.path.length) {
+              // 绘制路径
+              this.drawPath(this.path);
+              // 初始化路书
               this.lushu = new window.BMapGLLib.LuShu(this.bmap, this.path, {
                 defaultContent: this.iconLabel, // "信息窗口文案"
                 autoView: true, // 是否开启自动视野调整，如果开启那么路书在运动过程中会根据视野自动调整
@@ -123,10 +113,9 @@ export default Vue.extend({
             }
             this.$emit("ready", this.bmap, window.BMapGL, window.BMapGLLib);
           });
-        }, 700);
+        };
       });
     },
-    // eslint-disable-next-line no-undef
     drawPath(path: LngLat[]) {
       const polyLine = new window.BMapGL.Polyline(path, {
         strokeColor: this.strokeColor,

@@ -167,17 +167,19 @@ export default Vue.extend({
   methods: {
     mapReady(BMap: any, BMapGL: any, BMapGLLib: any, trackAni: any) {
       // console.log(trackAni);
+      console.log(BMap);
+      
       // 定位当前位置
-      var geolocation = new BMapGL.Geolocation();
-      geolocation.getCurrentPosition(function (this: any, r: any) {
-        if (this.getStatus() === 0) {
-          var mk = new BMapGL.Marker(r.point);
-          BMap.addOverlay(mk);
-          BMap.panTo(r.point);
-        } else {
-          alert("failed" + this.getStatus());
-        }
-      });
+      // var geolocation = new BMapGL.Geolocation();
+      // geolocation.getCurrentPosition(function (this: any, r: any) {
+      //   if (this.getStatus() === 0) {
+      //     var mk = new BMapGL.Marker(r.point);
+      //     BMap.addOverlay(mk);
+      //     BMap.panTo(r.point);
+      //   } else {
+      //     alert("failed" + this.getStatus());
+      //   }
+      // });
     },
     start() {
       (this.$refs.amap as any).startAnimation();

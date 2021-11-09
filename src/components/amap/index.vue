@@ -128,7 +128,7 @@ export default Vue.extend({
               this.amap.setCenter(e.target.getPosition(), true);
             });
             this.amap.setFitView();
-            this.$emit("change", this.amap, AMap);
+            this.$emit("ready", this.amap, AMap);
           });
         })
         .catch((e) => {
