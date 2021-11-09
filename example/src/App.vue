@@ -3,6 +3,7 @@
     <h2>高德地图实例：</h2>
     <AmapTrajectory
       ref="amap"
+      :showMap="true"
       @ready="mapReady"
       :path="path"
       :center="{
@@ -10,6 +11,7 @@
         lat: '40.047363',
       }"
       amapKey="c29e4b70537d93499ad99f11c305bae2"
+      @getMap="getAMap"
     />
     <button @click="start">开始</button>
     <button @click="pause">暂停</button>
@@ -203,6 +205,10 @@ export default Vue.extend({
     bmapStop() {
       (this.$refs.bmap as any).stopTrackAnimation();
     },
+
+    getAMap(AMap: any){
+      console.log(AMap);
+    }
   },
 });
 </script>

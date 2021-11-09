@@ -39,6 +39,10 @@ export default Vue.extend({
         };
       },
     },
+    showMap: {
+      type: Boolean,
+      default: true,
+    },
     mapZoom: {
       type: Number,
       default: 17,
@@ -102,38 +106,48 @@ export default Vue.extend({
       passedPolylines: null as any,
     };
   },
-  mounted() {
+  async mounted() {
     this.loadMap();
+
+    if (!this.showMap) {
+      const AMap = await this.getAMap();
+      this.$emit("getMap", AMap);
+    }
   },
   methods: {
-    loadMap() {
-      AMapLoader.load({
-        key: this.amapKey, // 申请好的Web端开发者Key，首次调用 load 时必填
-        version: "2.0", // 指定要加载的 JSAPI 的版本，缺省时默认为 1.4.15
-        plugins: ["AMap.MoveAnimation"], // 需要使用的的插件列表，如比例尺'AMap.Scale'等
-      })
-        .then(async (AMap) => {
-          this.amap = new AMap.Map(this.$refs.amap, {
-            resizeEnable: true,
-            center: [this.center.lng, this.center.lat],
-            zoom: this.mapZoom,
-          });
-          this.$emit("ready", this.amap, AMap);
-          AMap.plugin("AMap.MoveAnimation", () => {
-            this.createMarker(AMap);
-            this.polyLine(AMap);
-            this.passedPolyline(AMap);
-
-            this.marker.on("moving", (e: any) => {
-              this.passedPolylines.setPath(e.passedPath);
-              this.amap.setCenter(e.target.getPosition(), true);
-            });
-            this.amap.setFitView();
-          });
+    getAMap() {
+      return new Promise((resolve, reject) => {
+        AMapLoader.load({
+          key: this.amapKey, // 申请好的Web端开发者Key，首次调用 load 时必填
+          version: "2.0", // 指定要加载的 JSAPI 的版本，缺省时默认为 1.4.15
+          plugins: ["AMap.MoveAnimation"], // 需要使用的的插件列表，如比例尺'AMap.Scale'等
         })
-        .catch((e) => {
-          console.log(e);
+          .then(async (AMap) => {
+            resolve(AMap);
+          })
+          .catch((err) => reject(err));
+      });
+    },
+    async loadMap() {
+      if (!this.showMap) return;
+      const AMap: any = await this.getAMap();
+      this.amap = new AMap.Map(this.$refs.amap, {
+        resizeEnable: true,
+        center: [this.center.lng, this.center.lat],
+        zoom: this.mapZoom,
+      });
+      AMap.plugin("AMap.MoveAnimation", () => {
+        this.createMarker(AMap);
+        this.polyLine(AMap);
+        this.passedPolyline(AMap);
+
+        this.marker.on("moving", (e: any) => {
+          this.passedPolylines.setPath(e.passedPath);
+          this.amap.setCenter(e.target.getPosition(), true);
         });
+        this.amap.setFitView();
+      });
+      this.$emit("ready", this.amap, AMap);
     },
     handlerPath() {
       const { path } = this;

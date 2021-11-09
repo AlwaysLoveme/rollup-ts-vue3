@@ -1,6 +1,6 @@
 {
   "name": "vue-js-track-map",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "百度/高德地图API基于vue的鹰眼轨迹图",
   "main": "lib/index.js",
   "module": "lib/index.esm.js",

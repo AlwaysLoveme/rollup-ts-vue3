@@ -137,6 +137,13 @@ Vue.component(AmapTrajectory.name, AmapTrajectory);
       <td align="center">-</td>
       <td align="center">同polyLineOptions</td>
     </tr>
+    <tr>
+      <td>showMap</td>
+      <td>是否显示地图，默认显示，否则不显示地图，此时可以通过getMap钩子函数获取到window.AMap</td>
+      <td align="center">Boolean</td>
+      <td align="center">true/false</td>
+      <td align="center">true</td>
+    </tr>
   </tbody>
 </table>
 
@@ -151,6 +158,16 @@ Vue.component(AmapTrajectory.name, AmapTrajectory);
     </tr>
   </theader>
   <tbody>
+    <tr>
+      <td>getMap</td>
+      <td>获取AMAP，需要设置showMap为false</td>
+      <td>void</td>
+      <td align="left">
+        function(AMap)...
+        <br />
+        AMap: window.AMap
+      </td>
+    </tr>
     <tr>
       <td>ready</td>
       <td>地图加载完成的回调函数</td>
