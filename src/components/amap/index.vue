@@ -118,6 +118,7 @@ export default Vue.extend({
             center: [this.center.lng, this.center.lat],
             zoom: this.mapZoom,
           });
+          this.$emit("ready", this.amap, AMap);
           AMap.plugin("AMap.MoveAnimation", () => {
             this.createMarker(AMap);
             this.polyLine(AMap);
@@ -128,7 +129,6 @@ export default Vue.extend({
               this.amap.setCenter(e.target.getPosition(), true);
             });
             this.amap.setFitView();
-            this.$emit("ready", this.amap, AMap);
           });
         })
         .catch((e) => {
