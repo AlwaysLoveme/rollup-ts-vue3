@@ -12,4 +12,5 @@ interface Window {
   Vue: any;
   BMapGL: any;
   BMapGLLib: any;
+  AMap: any;
 }

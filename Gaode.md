@@ -51,6 +51,13 @@ Vue.component(AmapTrajectory.name, AmapTrajectory);
       <td align="center">-</td>
     </tr>
     <tr>
+      <td>plugins</td>
+      <td>高德地图插件列表</td>
+      <td>array</td>
+      <td align="center">字符串数组</td>
+      <td align="center">[], 默认已经包含AMap.MoveAnimation</td>
+    </tr>
+    <tr>
       <td>mapZoom</td>
       <td>地图缩放级别</td>
       <td align="center">Number</td>

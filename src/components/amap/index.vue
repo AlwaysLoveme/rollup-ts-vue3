@@ -30,6 +30,12 @@ export default Vue.extend({
       type: String,
       default: "400px",
     },
+    plugins: {
+      type: Array as PropType<string[]>,
+      default() {
+        return [];
+      },
+    },
     center: {
       type: Object as PropType<LngLat>,
       default() {
@@ -110,7 +116,7 @@ export default Vue.extend({
     this.loadMap();
 
     if (!this.showMap) {
-      const AMap = await this.getAMap();
+      const AMap = window.AMap ? window.AMap : await this.getAMap();
       this.$emit("getMap", AMap);
     }
   },
@@ -120,7 +126,7 @@ export default Vue.extend({
         AMapLoader.load({
           key: this.amapKey, // 申请好的Web端开发者Key，首次调用 load 时必填
           version: "2.0", // 指定要加载的 JSAPI 的版本，缺省时默认为 1.4.15
-          plugins: ["AMap.MoveAnimation"], // 需要使用的的插件列表，如比例尺'AMap.Scale'等
+          plugins: ["AMap.MoveAnimation"].concat(this.plugins), // 需要使用的的插件列表，如比例尺'AMap.Scale'等
         })
           .then(async (AMap) => {
             resolve(AMap);
@@ -130,7 +136,7 @@ export default Vue.extend({
     },
     async loadMap() {
       if (!this.showMap) return;
-      const AMap: any = await this.getAMap();
+      const AMap: any = window.AMap ? window.AMap : await this.getAMap();
       this.amap = new AMap.Map(this.$refs.amap, {
         resizeEnable: true,
         center: [this.center.lng, this.center.lat],
