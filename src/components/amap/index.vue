@@ -245,12 +245,18 @@ export default Vue.extend({
     },
     pauseAnimation() {
       this.marker.pauseMove();
+      this.showMarkerText &&
+        this.markerText.pauseMove();
     },
     resumeAnimation() {
       this.marker.resumeMove();
+      this.showMarkerText &&
+        this.markerText.resumeMove();
     },
     stopAnimation() {
       this.marker.stopMove();
+       this.showMarkerText &&
+        this.markerText.stopMove();
     },
   },
 });
