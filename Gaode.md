@@ -114,11 +114,18 @@ Vue.component(AmapTrajectory.name, AmapTrajectory);
       <td align="center">13</td>
     </tr>
     <tr>
-      <td>markerIconLabel</td>
-      <td>图标上方跟随的文本框信息</td>
-      <td align="center">String</td>
-      <td align="center">-</td>
-      <td align="center">-</td>
+      <td>showMarkerText</td>
+      <td>是否显示跟随marker的文本框, 默认不显示</td>
+      <td align="center">Boolean</td>
+      <td align="center">false/true</td>
+      <td align="center">false</td>
+    </tr>
+    <tr>
+      <td>markerTextOffset</td>
+      <td>跟随marker的文本框的偏移量</td>
+      <td align="center">Array<number></td>
+      <td align="center">[0,0]; 第一个值表示X轴偏移量，第二个值Y轴偏移量</td>
+      <td align="center">[0,0]</td>
     </tr>
     <tr>
       <td>polyLineOptions</td>
@@ -187,6 +194,16 @@ Vue.component(AmapTrajectory.name, AmapTrajectory);
         AMap: window.AMap
       </td>
     </tr>
+    <tr>
+      <td>markerTextMoving</td>
+      <td>markerText 移动时的回调函数</td>
+      <td>void</td>
+      <td align="left">
+        function({value})...
+        <br />
+        value: 移动的marker相关信息
+      </td>
+    </tr>
   </tbody>
 </table>
 
@@ -195,7 +212,7 @@ Vue.component(AmapTrajectory.name, AmapTrajectory);
 ```js
 <template>
   <div>
-    <AmapTrajectory ref="map" @ready="mapReady" amapKey="XXXXXXX" />
+    <AmapTrajectory ref="map" :markerTextOffset="[-110, -170]" showMarkerText @ready="mapReady" @markerTextMoving="markerTextMoving" amapKey="XXXXXXX" />
     <div>
       <button @click="start">开始</button>
       <button @click="pause">暂停</button>
@@ -210,9 +227,164 @@ Vue.component(AmapTrajectory.name, AmapTrajectory);
     components: {
       AmapTrajectory
     },
+    data(){
+      return {
+          oldPathInfo: {
+              time: '',
+              speed: '',
+          },
+          path: [
+            {
+              lng: 116.478935,
+              lat: 39.997761,
+              speed: 10,
+              time: "2020-12-12 07:37:23"
+            },
+            {
+              lng: 116.478939,
+              lat: 39.997825,
+              speed: 11,
+              time: "2020-12-12 07:39:23"
+            },
+            {
+              lng: 116.478912,
+              lat: 39.998549,
+              speed: 12,
+              time: "2020-12-12 07:42:23"
+            },
+            {
+              lng: 116.478912,
+              lat: 39.998549,
+              speed: 10,
+              time: "2020-12-12 07:43:23"
+            },
+            {
+              lng: 116.478998,
+              lat: 39.998555,
+              speed: 12,
+              time: "2020-12-12 07:45:23"
+            },
+            {
+              lng: 116.478998,
+              lat: 39.998555,
+              speed: 12,
+              time: "2020-12-12 07:47:23"
+            },
+            {
+              lng: 116.479282,
+              lat: 39.99856,
+              speed: 13,
+              time: "2020-12-12 07:49:23"
+            },
+            
+            {
+              lng: 116.479658,
+              lat: 39.998528,
+              speed: 14,
+              time: "2020-12-12 08:34:23"
+            },
+            {
+              lng: 116.480151,
+              lat: 39.998453,
+              speed: 13,
+              time: "2020-12-12 08:37:23"
+            },
+            {
+              lng: 116.480784,
+              lat: 39.998302,
+              speed: 10,
+              time: "2020-12-12 08:38:23"
+            },
+            {
+              lng: 116.480784,
+              lat: 39.998302,
+              speed: 10,
+              time: "2020-12-12 08:39:53"
+            },
+            {
+              lng: 116.481149,
+              lat: 39.998184,
+              speed: 10,
+              time: "2020-12-12 08:40:03"
+            },
+            
+            {
+              lng: 116.481573,
+              lat: 39.997997,
+              speed: 15,
+              time: "2020-12-12 08:41:00"
+            },
+            {
+              lng: 116.481863,
+              lat: 39.997846,
+              speed: 16,
+              time: "2020-12-12 08:43:03"
+            },
+            {
+              lng: 116.482072,
+              lat: 39.997718,
+              speed: 14,
+              time: "2020-12-12 08:45:23"
+            },
+            {
+              lng: 116.482362,
+              lat: 39.997718,
+              speed: 13,
+              time: "2020-12-12 08:50:23"
+            },
+            {
+              lng: 116.483633,
+              lat: 39.998935,
+              speed: 10,
+              time: "2020-12-12 08:52:23"
+            },
+            {
+              lng: 116.48367,
+              lat: 39.998968,
+              speed: 10,
+              time: "2020-12-12 08:53:23"
+            },
+            {
+              lng: 116.484648,
+              lat: 39.999861,
+              speed: 17,
+              time: "2020-12-12 08:54:23"
+            },
+            
+            {
+              lng: 116.485648,
+              lat: 39.999961,
+              speed: 50,
+              time: "2020-12-12 08:55:23"
+            }
+          ],
+      }
+    },
     methods: {
       mapReady(mapInstance, AMap) {
         console.log(mapInstance);
+      },
+      markerTextMoving({ value }: any) {
+          const lng = value.pos.lng;
+          const lat = value.pos.lat;
+          let pathInfo = this.oldPathInfo;
+          (this.path as any).forEach((item: any) => {
+          if (item.lng === lng && item.lat === lat) {
+              pathInfo = {
+              time: item.time,
+              speed: item.speed,
+            }
+            }
+          });
+          this.oldPathInfo = pathInfo;
+          this.$refs.map.markerText.setContent(`
+                <div class="marker-text">
+                  <p class="text-item">时间：${pathInfo.time}</p>
+                  <p class="text-item">速度：${pathInfo.speed || 0}kw/h</p>
+                  <p class="text-item">经度：${value.pos.lng}</p>
+                  <p class="text-item">纬度：${value.pos.lat}</p>
+                </div>
+          `);
       },
       // 开始
       start() {

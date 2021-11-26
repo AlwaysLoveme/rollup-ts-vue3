@@ -14,9 +14,10 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue';
 import { AmapTrajectory } from "../../lib";
 
-export default {
+export default Vue.extend({
   components: {
     AmapTrajectory
   },
@@ -32,8 +33,5 @@ export default {
       });
     }
   },
-}
+})
 </script>
-
-<style lang="scss" scoped>
-</style>

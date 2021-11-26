@@ -4,9 +4,10 @@
 
 <script lang="ts">
 import Vue, { PropType } from "vue";
-import "./index.scss";
 import AMapLoader from "@amap/amap-jsapi-loader";
 import MarkerIcon from "../../assets/amap-car.png";
+
+import "./index.scss";
 
 interface PolyLineOptions {
   showDir?: boolean;
@@ -15,6 +16,7 @@ interface PolyLineOptions {
   strokeOpacity?: number;
   strokeStyle?: string;
 }
+
 export default Vue.extend({
   name: "AmapTrajectory",
   props: {
@@ -57,10 +59,10 @@ export default Vue.extend({
       type: String,
       default: MarkerIcon,
     },
-    markerIconLabel: {
-      type: String,
-      default: "",
-    },
+    // markerIconLabel: {
+    //   type: String,
+    //   default: "",
+    // },
     markerIconWidth: {
       type: Number,
       default: 13,
@@ -68,6 +70,17 @@ export default Vue.extend({
     markerIconHeight: {
       type: Number,
       default: 26,
+    },
+    // 是否显示跟随marker的文本框
+    showMarkerText: {
+      type: Boolean,
+      default: false,
+    },
+    markerTextOffset: {
+      type: Array as PropType<number[]>,
+      default() {
+        return [0, 0];
+      },
     },
     path: {
       type: Array as PropType<LngLat[]>,
@@ -109,11 +122,12 @@ export default Vue.extend({
       amap: null as any,
       marker: null as any,
       polyline: null as any,
+      markerText: null as any,
       passedPolylines: null as any,
     };
   },
   async mounted() {
-    this.loadMap();
+    await this.loadMap();
 
     if (!this.showMap) {
       const AMap = window.AMap ? window.AMap : await this.getAMap();
@@ -144,13 +158,21 @@ export default Vue.extend({
       });
       AMap.plugin("AMap.MoveAnimation", () => {
         this.createMarker(AMap);
+        this.showMarkerText && this.createMarkerText(AMap);
         this.polyLine(AMap);
         this.passedPolyline(AMap);
 
         this.marker.on("moving", (e: any) => {
+          console.log(e);
           this.passedPolylines.setPath(e.passedPath);
           this.amap.setCenter(e.target.getPosition(), true);
         });
+        this.showMarkerText &&
+          this.markerText.on("moving", (e: any) => {
+            this.$emit("markerTextMoving", {
+              value: e,
+            });
+          });
         this.amap.setFitView();
       });
       this.$emit("ready", this.amap, AMap);
@@ -195,11 +217,15 @@ export default Vue.extend({
           -this.markerIconWidth,
           -(this.markerIconHeight / 2)
         ),
-        label: {
-          direction: "top",
-          content: this.markerIconLabel,
-          offset: new AMap.Pixel(0, 5),
-        },
+      });
+    },
+    // 创建marker跟随文本
+    createMarkerText(AMap: any) {
+      this.markerText = new AMap.Marker({
+        map: this.amap,
+        content: "<span></span>",
+        offset: this.markerTextOffset,
+        position: this.handlerPath()[0],
       });
     },
     startAnimation() {
@@ -209,6 +235,13 @@ export default Vue.extend({
         // JSAPI2.0 是否延道路自动设置角度在 moveAlong 里设置
         autoRotation: true,
       });
+      this.showMarkerText &&
+        this.markerText.moveAlong(this.handlerPath(), {
+          // 每一段的时长
+          duration: 790, //可根据实际采集时间间隔设置
+          // JSAPI2.0 是否延道路自动设置角度在 moveAlong 里设置
+          autoRotation: false,
+        });
     },
     pauseAnimation() {
       this.marker.pauseMove();
