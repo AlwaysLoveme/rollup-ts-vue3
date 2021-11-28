@@ -18,6 +18,7 @@
     />
     <button @click="start">开始</button>
     <button @click="pause">暂停</button>
+    <button @click="resume">恢复</button>
     <button @click="stop">停止</button>
 
     <!-- <div>
@@ -65,6 +66,27 @@ export default Vue.extend({
           speed: 11,
           time: "2020-12-12 07:39:23"
         },
+
+        {
+          lng: 116.478939,
+          lat: 39.997825,
+          speed: 11,
+          time: "2020-12-12 07:40:00"
+        },
+        {
+          lng: 116.478939,
+          lat: 39.997825,
+          speed: 11,
+          time: "2020-12-12 07:41:08"
+        },
+        {
+          lng: 116.478939,
+          lat: 39.997825,
+          speed: 11,
+          time: "2020-12-12 07:43:55"
+        },
+
+
         {
           lng: 116.478912,
           lat: 39.998549,
@@ -257,6 +279,9 @@ export default Vue.extend({
       (this.$refs.amap as any).startAnimation();
     },
     pause() {
+      (this.$refs.amap as any).pauseAnimation();
+    },
+    resume(){
       (this.$refs.amap as any).resumeAnimation();
     },
     stop() {

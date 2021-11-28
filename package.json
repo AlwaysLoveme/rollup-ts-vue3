@@ -35,7 +35,8 @@
   },
   "homepage": "https://github.com/AlwaysLoveme/rollup-ts-vue3/tree/vue2#readme",
   "dependencies": {
-    "@amap/amap-jsapi-loader": "^1.0.1"
+    "@amap/amap-jsapi-loader": "^1.0.1",
+    "vue": "^2.6.14"
   },
   "peerDependencies": {
     "vue": "^2.6.14"
@@ -69,6 +70,7 @@
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.1",
+    "eslint-plugin-vue": "^8.1.1",
     "parcel-bundler": "^1.12.5",
     "parcel-plugin-vue": "^1.5.0",
     "postcss-import": "^14.0.2",

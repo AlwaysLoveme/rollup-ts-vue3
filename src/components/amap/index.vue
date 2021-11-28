@@ -24,6 +24,10 @@ export default Vue.extend({
       type: String,
       default: "",
     },
+    viewMode: {
+      type: String,
+      default: "2d",
+    },
     width: {
       type: String,
       default: "800px",
@@ -155,6 +159,7 @@ export default Vue.extend({
         resizeEnable: true,
         center: [this.center.lng, this.center.lat],
         zoom: this.mapZoom,
+        viewMode: this.viewMode,
       });
       AMap.plugin("AMap.MoveAnimation", () => {
         this.createMarker(AMap);
@@ -163,7 +168,6 @@ export default Vue.extend({
         this.passedPolyline(AMap);
 
         this.marker.on("moving", (e: any) => {
-          console.log(e);
           this.passedPolylines.setPath(e.passedPath);
           this.amap.setCenter(e.target.getPosition(), true);
         });
@@ -234,6 +238,8 @@ export default Vue.extend({
         duration: 800, //可根据实际采集时间间隔设置
         // JSAPI2.0 是否延道路自动设置角度在 moveAlong 里设置
         autoRotation: true,
+        aniInterval: 100, //每段完整动画间隔时长
+        circlable: false, //动画是否循环
       });
       this.showMarkerText &&
         this.markerText.moveAlong(this.handlerPath(), {
@@ -241,22 +247,21 @@ export default Vue.extend({
           duration: 790, //可根据实际采集时间间隔设置
           // JSAPI2.0 是否延道路自动设置角度在 moveAlong 里设置
           autoRotation: false,
+          aniInterval: 100, //每段完整动画间隔时长
+          circlable: false, //动画是否循环
         });
     },
     pauseAnimation() {
       this.marker.pauseMove();
-      this.showMarkerText &&
-        this.markerText.pauseMove();
+      this.showMarkerText && this.markerText.pauseMove();
     },
     resumeAnimation() {
       this.marker.resumeMove();
-      this.showMarkerText &&
-        this.markerText.resumeMove();
+      this.showMarkerText && this.markerText.resumeMove();
     },
     stopAnimation() {
       this.marker.stopMove();
-       this.showMarkerText &&
-        this.markerText.stopMove();
+      this.showMarkerText && this.markerText.stopMove();
     },
   },
 });
